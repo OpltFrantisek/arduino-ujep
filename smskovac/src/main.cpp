@@ -17,6 +17,7 @@ GSM gsm(dte);
 void setup(void) {
   Serial.begin(9600);
   SSerial.begin(19200);
+  pinMode(13,OUTPUT);
   Serial.println("Zapinam smskovac...");
   dte.powerReset();
   Serial.println("cekam na sit...");
@@ -38,6 +39,11 @@ void loop(void) {
     struct Message m = sms.readSMS(Urc.newMessageIndication.index);
     Serial.println(m.address);
     Serial.println(m.data);
+    if(m.data[0] == '1')
+        digitalWrite(13,1);
+    if(m.data[0] == '0')
+        digitalWrite(13,0);
+    m.data[0] = '0';
     Urc.newMessageIndication.updated = false;
   }
 }
